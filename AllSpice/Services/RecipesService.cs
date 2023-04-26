@@ -14,6 +14,20 @@ public class RecipesService
     return recipe;
   }
 
+  internal string DeleteRecipe(string userId, int recipeId)
+  {
+    Recipe recipe = GetRecipeById(recipeId);
+    if (recipe.CreatorId == userId)
+    {
+      int rowsAffected = _repo.DeleteRecipe(recipeId);
+      return $"{recipe.Title} has been successfully deleted.";
+    }
+    else
+    {
+      throw new Exception("You do not have permission to delete another user's recipe.");
+    }
+  }
+
   internal Recipe EditRecipe(Recipe recipeData, int recipeId, string userId)
   {
     Recipe ogRecipe = this.GetRecipeById(recipeId);
