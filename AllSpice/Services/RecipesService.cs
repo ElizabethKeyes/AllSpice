@@ -55,6 +55,10 @@ public class RecipesService
   internal Recipe GetRecipeById(int recipeId)
   {
     Recipe recipe = _repo.GetRecipeById(recipeId);
+    if (recipe == null)
+    {
+      throw new Exception("No recipe found at id @recipeId");
+    }
     return recipe;
   }
 }
