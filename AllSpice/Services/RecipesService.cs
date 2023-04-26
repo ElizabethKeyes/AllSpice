@@ -14,6 +14,24 @@ public class RecipesService
     return recipe;
   }
 
+  internal Recipe EditRecipe(Recipe recipeData, int recipeId, string userId)
+  {
+    Recipe ogRecipe = this.GetRecipeById(recipeId);
+    if (ogRecipe.CreatorId == userId)
+    {
+      ogRecipe.Title = recipeData.Title ?? ogRecipe.Title;
+      ogRecipe.Instructions = recipeData.Instructions ?? ogRecipe.Instructions;
+      ogRecipe.Img = recipeData.Img ?? ogRecipe.Img;
+      ogRecipe.Category = recipeData.Category ?? ogRecipe.Category;
+      _repo.EditRecipe(ogRecipe);
+      return ogRecipe;
+    }
+    else
+    {
+      throw new Exception("You are not authorized to edit another user's recipe.");
+    }
+  }
+
   internal List<Recipe> GetAllRecipes()
   {
     List<Recipe> recipes = _repo.GetAllRecipes();

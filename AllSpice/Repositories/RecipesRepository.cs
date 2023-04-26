@@ -31,6 +31,20 @@ public class RecipesRepository
     return recipe;
   }
 
+  internal void EditRecipe(Recipe ogRecipe)
+  {
+    string sql = @"
+    UPDATE recipes
+    SET
+    Title = @Title,
+    Instructions = @Instructions,
+    Img = @Img,
+    Category = @Category
+    WHERE id = @Id;
+    ";
+    _db.Execute(sql, ogRecipe);
+  }
+
   internal List<Recipe> GetAllRecipes()
   {
     string sql = @"
