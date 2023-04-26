@@ -5,4 +5,16 @@ CREATE TABLE IF NOT EXISTS accounts(
   name varchar(255) COMMENT 'User Name',
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture'
-) default charset utf8 COMMENT '';
+) default charset utf8mb4 COMMENT '';
+
+
+CREATE TABLE IF NOT EXISTS recipes(
+  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT "Primary Key",
+  title VARCHAR(50) NOT NULL,
+  instructions VARCHAR(500) NOT NULL,
+  img VARCHAR(255) NOT NULL,
+  category VARCHAR(255) NOT NULL,
+  creatorId VARCHAR(255) NOT NULL,
+
+  FOREIGN KEY (creatorId) REFERENCES accounts (id) ON DELETE CASCADE
+)default charset utf8mb4 COMMENT '';
