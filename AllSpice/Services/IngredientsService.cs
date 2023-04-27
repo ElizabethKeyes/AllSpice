@@ -17,11 +17,19 @@ public class IngredientsService
 
   internal string DeleteIngredient(int ingredientId, string userId)
   {
-    // TODO Should check that userId match the creatorId on the recipe. Will need to add recipe virtual to ingredient.
-    // Make GetIngredientById(), then use the recipeId from that ingredient to GetRecipeById()
-    // Check that the userId matches the recipe.creatorId.
-    int rowsAffected = _repo.DeleteIngredient(ingredientId);
-    return $"The ingredient at id {ingredientId} has been removed from the recipe.";
+    Ingredient ingredient = this.GetIngredientById(ingredientId);
+    if (ingredient.Recipe.CreatorId == userId)
+    {
+      int rowsAffected = _repo.DeleteIngredient(ingredientId);
+      return $"The ingredient at id {ingredientId} has been removed from the recipe.";
+    }
+    else throw new Exception("You cannot delete ingredients from someone else's recipe.");
+  }
+
+  internal Ingredient GetIngredientById(int ingredientId)
+  {
+    Ingredient ingredient = _repo.GetIngredientById(ingredientId);
+    return ingredient;
   }
 
   internal List<Ingredient> GetIngredientsByRecipeId(int recipeId)

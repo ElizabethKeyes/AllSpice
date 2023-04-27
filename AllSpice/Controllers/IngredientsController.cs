@@ -44,4 +44,18 @@ public class IngredientsController : ControllerBase
       return BadRequest(e.Message);
     }
   }
+
+  [HttpGet("{ingredientId}")]
+  public ActionResult<Ingredient> GetIngredientById(int ingredientId)
+  {
+    try
+    {
+      Ingredient ingredient = _ingredientsService.GetIngredientById(ingredientId);
+      return Ok(ingredient);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }
