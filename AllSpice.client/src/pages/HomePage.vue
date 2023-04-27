@@ -1,44 +1,81 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img
-        src="https://bcw.blob.core.windows.net/public/img/8600856373152463"
-        alt="CodeWorks Logo"
-        class="rounded-circle"
-      >
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
+  <div class="container-fluid">
+    <section class="row">
+      <div v-for="recipe in recipes" class="col-md-4">
+        <div class="recipe-card elevation-4"
+          :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
+          <div class="mt-1">
+            <h6 class="category-card">{{ recipe.category }}</h6>
+          </div>
+          <div class="title-card">
+            <h6>{{ recipe.title }}</h6>
+            <h6>{{ recipe.instructions }}</h6>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { logger } from "../utils/Logger.js"
+import Pop from "../utils/Pop.js"
+import { recipesService } from "../services/RecipesService.js"
+import { computed, onMounted } from "vue"
+import { AppState } from "../AppState.js"
+
 export default {
   setup() {
-    return {}
+
+    async function getAllRecipes() {
+      try {
+        await recipesService.getAllRecipes()
+      } catch (error) {
+        logger.log(error)
+        Pop.error(error.message)
+      }
+    }
+
+    onMounted(() => {
+      getAllRecipes();
+    })
+
+    return {
+      recipes: computed(() => AppState.recipes),
+
+
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
+.recipe-card {
+  min-height: 25vh;
+  margin-bottom: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  .home-card {
-    width: 50vw;
+.category-card {
+  background-color: rgba(126, 126, 126, 0.6);
+  color: rgba(253, 253, 253, 1);
+  display: inline;
+  padding-left: .35em;
+  padding-right: .35em;
+  margin-left: .5em;
+  border-radius: 10px
+}
 
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
+.title-card {
+  background-color: rgba(126, 126, 126, 0.6);
+  color: rgba(253, 253, 253, 1);
+  padding-left: .35em;
+  padding-right: .35em;
+  margin-bottom: .3em;
+  margin-left: .3em;
+  margin-right: .3em;
+  border-radius: 10px;
 }
 </style>
