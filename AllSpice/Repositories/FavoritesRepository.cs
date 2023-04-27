@@ -26,6 +26,19 @@ public class FavoritesRepository
     return favorite;
   }
 
+  internal void DeleteFavorite(int favoriteId)
+  {
+    string sql = "DELETE FROM favorites WHERE id = @favoriteId;";
+    _db.Execute(sql, new { favoriteId });
+  }
+
+  internal Favorite GetFavoriteById(int favoriteId)
+  {
+    string sql = "SELECT * FROM favorites WHERE id = @favoriteId;";
+    Favorite favorite = _db.Query<Favorite>(sql, new { favoriteId }).FirstOrDefault();
+    return favorite;
+  }
+
   internal List<MyFavorite> GetMyFavorites(string userId)
   {
     string sql = @"
