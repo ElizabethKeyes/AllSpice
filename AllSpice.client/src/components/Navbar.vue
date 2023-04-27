@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <section class="row">
       <div class="col-12 p-3">
-        <div class="banner">
+        <div class="banner elevation-3">
           <Login class="login" />
           <h2 class="title-text">All-Spice</h2>
         </div>
