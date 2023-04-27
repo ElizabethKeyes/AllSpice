@@ -27,4 +27,22 @@ public class AccountController : ControllerBase
       return BadRequest(e.Message);
     }
   }
+
+  [HttpGet("favorites")]
+  [Authorize]
+  public async Task<ActionResult<List<Favorite>>> GetFavoritesByAccountId()
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      List<Favorite> favorites = _accountService.GetFavoritesByAccountId(userId);
+      return Ok(favorites);
+
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }
