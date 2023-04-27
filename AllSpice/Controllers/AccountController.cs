@@ -30,13 +30,13 @@ public class AccountController : ControllerBase
 
   [HttpGet("favorites")]
   [Authorize]
-  public async Task<ActionResult<List<Favorite>>> GetFavoritesByAccountId()
+  public async Task<ActionResult<List<MyFavorite>>> GetMyFavorites()
   {
     try
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       string userId = userInfo.Id;
-      List<Favorite> favorites = _accountService.GetFavoritesByAccountId(userId);
+      List<MyFavorite> favorites = _accountService.GetMyFavorites(userId);
       return Ok(favorites);
 
     }

@@ -34,9 +34,9 @@ public class AccountService
     return _repo.Edit(original);
   }
 
-  internal List<Favorite> GetFavoritesByAccountId(string userId)
+  internal List<MyFavorite> GetMyFavorites(string userId)
   {
-    List<Favorite> favorites = _favoritesService.GetFavoritesByAccountId(userId);
+    List<MyFavorite> favorites = _favoritesService.GetMyFavorites(userId);
     return favorites;
   }
 }

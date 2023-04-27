@@ -17,27 +17,16 @@ public class FavoritesRepository
     VALUES
     (@AccountId, @RecipeId);
 
-    SELECT
-    favorites.*,
-    accounts.*,
-    recipes.*
-
+    SELECT *
     FROM favorites
-    JOIN accounts ON accounts.id = favorites.accountId
-    JOIN recipes ON recipes.id = favorites.recipeId
     WHERE favorites.id = LAST_INSERT_ID();
     ";
 
-    Favorite favorite = _db.Query<Favorite, Account, Recipe, Favorite>(sql, (favorite, account, recipe) =>
-    {
-      favorite.Account = account;
-      favorite.Recipe = recipe;
-      return favorite;
-    }, favoriteData).FirstOrDefault();
+    Favorite favorite = _db.Query<Favorite>(sql, favoriteData).FirstOrDefault();
     return favorite;
   }
 
-  internal List<Favorite> GetFavoritesByAccountId(string userId)
+  internal List<MyFavorite> GetMyFavorites(string userId)
   {
     string sql = @"
     SELECT
@@ -49,11 +38,11 @@ public class FavoritesRepository
     JOIN recipes ON recipes.id = favorites.recipeId
     WHERE accountId = @userId
     ;";
-    List<Favorite> favorites = _db.Query<Favorite, Account, Recipe, Favorite>(sql, (favorite, account, recipe) =>
+    List<MyFavorite> favorites = _db.Query<Favorite, Account, MyFavorite, MyFavorite>(sql, (favorite, account, myFavorite) =>
     {
-      favorite.Account = account;
-      favorite.Recipe = recipe;
-      return favorite;
+      myFavorite.Creator = account;
+      myFavorite.FavoriteId = favorite.Id;
+      return myFavorite;
     }, new { userId }).ToList();
     return favorites;
   }

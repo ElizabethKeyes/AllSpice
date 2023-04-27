@@ -15,9 +15,9 @@ public class FavoritesService
     return favorite;
   }
 
-  internal List<Favorite> GetFavoritesByAccountId(string userId)
+  internal List<MyFavorite> GetMyFavorites(string userId)
   {
-    List<Favorite> favorites = _repo.GetFavoritesByAccountId(userId);
+    List<MyFavorite> favorites = _repo.GetMyFavorites(userId);
     return favorites;
   }
 }
