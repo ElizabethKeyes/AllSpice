@@ -3,9 +3,11 @@ namespace AllSpice.Services;
 public class RecipesService
 {
   private readonly RecipesRepository _repo;
-  public RecipesService(RecipesRepository repo)
+  private readonly IngredientsService _ingredientsService;
+  public RecipesService(RecipesRepository repo, IngredientsService ingredientsService)
   {
     _repo = repo;
+    _ingredientsService = ingredientsService;
   }
 
   internal Recipe CreateRecipe(Recipe recipeData)
@@ -50,6 +52,13 @@ public class RecipesService
   {
     List<Recipe> recipes = _repo.GetAllRecipes();
     return recipes;
+  }
+
+  internal List<Ingredient> GetIngredientsByRecipeId(int recipeId)
+  {
+    Recipe recipe = GetRecipeById(recipeId);
+    List<Ingredient> ingredients = _ingredientsService.GetIngredientsByRecipeId(recipeId);
+    return ingredients;
   }
 
   internal Recipe GetRecipeById(int recipeId)
