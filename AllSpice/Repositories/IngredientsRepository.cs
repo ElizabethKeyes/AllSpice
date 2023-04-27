@@ -22,6 +22,13 @@ public class IngredientsRepository
     return ingredient;
   }
 
+  internal int DeleteIngredient(int ingredientId)
+  {
+    string sql = "DELETE FROM ingredients WHERE id = @ingredientId";
+    int rowsAffected = _db.ExecuteScalar<int>(sql, new { ingredientId });
+    return rowsAffected;
+  }
+
   internal List<Ingredient> GetIngredientsByRecipeId(int recipeId)
   {
     string sql = "SELECT * FROM ingredients WHERE recipeId = @recipeId;";
