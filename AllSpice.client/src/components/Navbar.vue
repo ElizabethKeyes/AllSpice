@@ -1,5 +1,16 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 mb-3">
+  <div class="container-fluid">
+    <section class="row">
+      <div class="col-12 p-3">
+        <div class="banner">
+          <Login class="login" />
+          <h2 class="title-text">All-Spice</h2>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 mb-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
@@ -16,11 +27,11 @@
             About
           </router-link>
         </li>
-      </ul>
-      <!-- LOGIN COMPONENT HERE -->
-      <Login />
+      </ul> -->
+  <!-- LOGIN COMPONENT HERE -->
+  <!-- <Login />
     </div>
-  </nav>
+  </nav> -->
 </template>
 
 <script>
@@ -34,6 +45,29 @@ export default {
 </script>
 
 <style scoped>
+.banner {
+  background-image: url(../assets/img/bannerImg.png);
+  background-position: center;
+  background-size: cover;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.title-text {
+  color: rgba(253, 253, 253, 1);
+}
+
+.login {
+  position: absolute;
+  top: 10px;
+  right: 10px
+}
+
+
+
 a:hover {
   text-decoration: none;
 }
@@ -47,6 +81,7 @@ a:hover {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
 
 @media screen and (min-width: 768px) {
   nav {
