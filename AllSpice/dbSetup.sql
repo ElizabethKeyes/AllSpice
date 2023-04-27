@@ -27,3 +27,13 @@ CREATE TABLE IF NOT EXISTS ingredients(
 
   FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
 )default charset utf8mb4 COMMENT '';
+
+CREATE TABLE IF NOT EXISTS favorites(
+  id INT AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT "Primary Key",
+  accountId VARCHAR(255) NOT NULL,
+  recipeId INT NOT NULL,
+
+  FOREIGN KEY (accountId) REFERENCES accounts (id) ON DELETE CASCADE,
+  FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
+)default charset utf8mb4 COMMENT '';
+
