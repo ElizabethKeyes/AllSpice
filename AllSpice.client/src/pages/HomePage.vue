@@ -21,6 +21,7 @@ import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { recipesService } from "../services/RecipesService.js"
 import { favoritesService } from "../services/FavoritesService.js"
+import { ingredientsService } from "../services/IngredientsService.js"
 import { computed, onMounted, ref, watchEffect } from "vue"
 import { AppState } from "../AppState.js"
 import RecipeCard from "../components/RecipeCard.vue"
@@ -47,9 +48,24 @@ export default {
       }
     }
 
+    async function getIngredientsByRecipeId(recipeId) {
+      try {
+        await ingredientsService.getIngredientsByRecipeId(recipeId)
+      } catch (error) {
+        logger.log(error)
+        Pop.error(error.message)
+      }
+    }
+
     watchEffect(() => {
       if (AppState.account.id) {
         getMyFavorites();
+      }
+    })
+
+    watchEffect(() => {
+      if (AppState.activeRecipe) {
+        getIngredientsByRecipeId(AppState.activeRecipe.id);
       }
     })
 
@@ -102,6 +118,8 @@ export default {
   color: rgba(33, 150, 83, 1);
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+  font-family: 'Sahitya', serif;
+  font-size: large;
 }
 
 .selectedUnderline {

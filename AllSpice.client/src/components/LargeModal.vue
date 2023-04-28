@@ -32,7 +32,9 @@
                   </div>
                   <div class="card-body">
                     <!-- TODO add ingredients once they've been retrieved. -->
-                    <!-- <h6>{{ recipe. }}</h6> -->
+                    <ul>
+                      <li v-for="i in ingredients" :key="i.id">{{ i.name }}</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -52,7 +54,8 @@ import { AppState } from "../AppState.js";
 export default {
   setup() {
     return {
-      recipe: computed(() => AppState.activeRecipe)
+      recipe: computed(() => AppState.activeRecipe),
+      ingredients: computed(() => AppState.ingredients),
     }
   }
 }

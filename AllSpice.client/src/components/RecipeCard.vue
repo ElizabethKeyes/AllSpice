@@ -4,11 +4,11 @@
     :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
     <div class="mt-1 d-flex justify-content-between">
       <h6 class="category-card">{{ recipe.category }}</h6>
-      <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger"></i></h6>
-      <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline"></i></h6>
+      <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fs-4"></i></h6>
+      <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline fs-4"></i></h6>
     </div>
     <div class="title-card">
-      <h6>{{ recipe.title }}</h6>
+      <h6 class="fw-bold mb-0">{{ recipe.title }}</h6>
     </div>
   </div>
   <LargeModal />
@@ -72,8 +72,11 @@ export default {
   display: inline;
   padding-left: .35em;
   padding-right: .35em;
+  padding-top: .25em;
+  padding-bottom: .25em;
   margin-left: .5em;
-  border-radius: 10px
+  border-radius: 10px;
+  font-weight: bold;
 }
 
 .favorites-card {
@@ -97,9 +100,12 @@ export default {
   color: rgba(253, 253, 253, 1);
   padding-left: .35em;
   padding-right: .35em;
+  padding-top: .25em;
+  padding-bottom: .25em;
   margin-bottom: .3em;
   margin-left: .3em;
   margin-right: .3em;
   border-radius: 10px;
+
 }
 </style>
