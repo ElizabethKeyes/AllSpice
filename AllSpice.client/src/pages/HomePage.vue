@@ -3,7 +3,8 @@
     <section class="row justify-content-center">
       <div class="col-md-6 relative-col">
         <div class="filter-bar elevation-3">
-          <button class="btn filter-btn" v-for="c in categories" @click="changeFilterCategory(c)">{{ c }}</button>
+          <button class="btn filter-btn" :class="{ selectedUnderline: filterCategory == c.toLowerCase() }"
+            v-for="c in categories" @click="changeFilterCategory(c)">{{ c }}</button>
         </div>
       </div>
     </section>
@@ -19,6 +20,7 @@
 import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { recipesService } from "../services/RecipesService.js"
+import { favoritesService } from "../services/FavoritesService.js"
 import { computed, onMounted, ref, watchEffect } from "vue"
 import { AppState } from "../AppState.js"
 import RecipeCard from "../components/RecipeCard.vue"
@@ -35,6 +37,21 @@ export default {
         Pop.error(error.message);
       }
     }
+
+    async function getMyFavorites() {
+      try {
+        await favoritesService.getMyFavorites()
+      } catch (error) {
+        logger.log(error)
+        Pop.error(error.message)
+      }
+    }
+
+    watchEffect(() => {
+      if (AppState.account.id) {
+        getMyFavorites();
+      }
+    })
 
 
     onMounted(() => {
@@ -84,6 +101,13 @@ export default {
   color: rgba(33, 150, 83, 1);
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+}
+
+.selectedUnderline {
+  color: rgba(33, 150, 83, 1);
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom: solid 5px rgba(33, 150, 83, 1)
 }
 
 .filter-btn:hover {
