@@ -4,7 +4,8 @@
       <div class="col-12 p-3">
         <div class="banner elevation-3">
           <Login class="login" />
-          <h2 class="title-text">All-Spice</h2>
+          <h1 class="title-text">All-Spice</h1>
+          <h5 class="title-text">Cherish Your Family<br>And Their Cooking</h5>
         </div>
       </div>
     </section>
@@ -51,6 +52,7 @@ export default {
   background-size: cover;
   height: 40vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -58,6 +60,8 @@ export default {
 
 .title-text {
   color: rgba(253, 253, 253, 1);
+  font-family: 'Sahitya', serif;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 1))
 }
 
 .login {

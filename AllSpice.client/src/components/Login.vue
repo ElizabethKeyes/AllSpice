@@ -9,16 +9,16 @@
     <div class="dropdown dropstart my-2 my-lg-0">
       <div type="button" class="border-0 selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
         <div v-if="account.picture || user.picture">
-          <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
+          <img :src="account.picture || user.picture" alt="account photo" height="40" class="profile-pic" />
         </div>
       </div>
       <div class="dropdown-menu dropdown-menu-lg-left p-0" aria-labelledby="authDropdown">
         <div class="list-group">
-          <!-- <router-link :to="{ name: 'Account' }">
+          <router-link :to="{ name: 'Account' }">
             <div class="list-group-item dropdown-item list-group-item-action">
               Manage Account
             </div>
-          </router-link> -->
+          </router-link>
           <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
             <i class="mdi mdi-logout"></i>
             logout
@@ -51,4 +51,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.profile-pic {
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+</style>

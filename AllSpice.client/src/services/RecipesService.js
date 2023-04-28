@@ -12,6 +12,10 @@ class RecipesService {
     }
   }
 
+  setActiveRecipe(recipeId) {
+    AppState.activeRecipe = AppState.recipes.find(r => r.id == recipeId)
+  }
+
 
 }
 

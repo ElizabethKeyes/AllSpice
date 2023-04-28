@@ -1,5 +1,6 @@
 <template>
-  <div class="recipe-card elevation-4" data-bs-toggle="modal" data-bs-target="#recipeDetailsModal"
+  <div @click="setActiveRecipe(recipe.id)" class="recipe-card elevation-4" data-bs-toggle="modal"
+    data-bs-target="#recipeDetailsModal"
     :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
     <div class="mt-1 d-flex justify-content-between">
       <h6 class="category-card">{{ recipe.category }}</h6>
@@ -8,7 +9,6 @@
     </div>
     <div class="title-card">
       <h6>{{ recipe.title }}</h6>
-      <h6>{{ recipe.instructions }}</h6>
     </div>
   </div>
   <LargeModal />
@@ -20,6 +20,7 @@ import LargeModal from "./LargeModal.vue";
 import { Recipe } from "../models/Recipe.js";
 import { AppState } from "../AppState.js";
 import { computed } from "vue";
+import { recipesService } from "../services/RecipesService.js";
 
 export default {
   props: {
@@ -37,6 +38,10 @@ export default {
         if (AppState.myFavorites.find(f => f.id == recipeId)) {
           return true
         } else return false
+      },
+
+      setActiveRecipe(recipeId) {
+        recipesService.setActiveRecipe(recipeId)
       }
     };
   },
