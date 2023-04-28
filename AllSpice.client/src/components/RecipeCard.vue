@@ -3,7 +3,8 @@
     :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
     <div class="mt-1 d-flex justify-content-between">
       <h6 class="category-card">{{ recipe.category }}</h6>
-      <h6 class="favorites-card"><i class="mdi mdi-heart-outline"></i></h6>
+      <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger"></i></h6>
+      <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline"></i></h6>
     </div>
     <div class="title-card">
       <h6>{{ recipe.title }}</h6>
@@ -17,6 +18,8 @@
 <script>
 import LargeModal from "./LargeModal.vue";
 import { Recipe } from "../models/Recipe.js";
+import { AppState } from "../AppState.js";
+import { computed } from "vue";
 
 export default {
   props: {
@@ -28,6 +31,13 @@ export default {
 
   setup() {
     return {
+      myFavorites: computed(() => { AppState.myFavorites }),
+
+      isFavorite(recipeId) {
+        if (AppState.myFavorites.find(f => f.id == recipeId)) {
+          return true
+        } else return false
+      }
     };
   },
   components: { LargeModal }

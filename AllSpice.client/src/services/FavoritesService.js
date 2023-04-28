@@ -7,7 +7,6 @@ class FavoritesService {
   async getMyFavorites() {
     const res = await api.get("/account/favorites")
     AppState.myFavorites = res.data.map(f => new MyFavorite(f))
-    logger.log("[appstate myFavorites]", AppState.myFavorites)
   }
 }
 

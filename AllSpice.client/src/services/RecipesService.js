@@ -9,7 +9,6 @@ class RecipesService {
     AppState.recipes = res.data.map(r => new Recipe(r))
     if (AppState.account && AppState.recipes) {
       AppState.myRecipes = AppState.recipes.filter(r => r.creatorId == AppState.account.id)
-      logger.log("[My Recipes]", AppState.myRecipes)
     }
   }
 

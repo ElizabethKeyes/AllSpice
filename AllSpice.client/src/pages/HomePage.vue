@@ -9,7 +9,7 @@
       </div>
     </section>
     <section class="row mt-5">
-      <div v-for="recipe in recipes" class="col-md-4">
+      <div v-for="(recipe, i) in recipes" :key="recipe.id" class="col-md-4">
         <RecipeCard :recipe="recipe" />
       </div>
     </section>
@@ -67,12 +67,13 @@ export default {
           return AppState.recipes
         } else if (filterCategory.value == "my recipes") {
           return AppState.recipes.filter(r => r.creatorId == AppState.account.id)
+        } else if (filterCategory.value == "favorites") {
+          return AppState.myFavorites
         }
       }),
 
       changeFilterCategory(categoryName) {
         filterCategory.value = categoryName.toLowerCase()
-        logger.log('changing category', filterCategory.value)
       }
     };
   },
