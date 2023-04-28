@@ -6,16 +6,16 @@
         <div class="modal-body row" v-if="recipe">
           <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#recipeDetailsModal"
             aria-label="Close"></button>
-          <div class="col-5">
+          <div class="col-md-5">
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
           </div>
-          <div class="col-7">
+          <div class="col-md-7">
             <div class="d-flex align-items-center">
-              <h2 class="green-text mt-4">{{ recipe.title }}</h2>
+              <h2 class="title-text mt-4">{{ recipe.title }}</h2>
               <h6 class="category-card">{{ recipe.category }}</h6>
             </div>
             <section class="row pe-4 mt-5">
-              <div class="col-6">
+              <div class="col-md-6">
                 <div class="details-cards">
                   <div class="card-title">
                     <h2>Recipe Steps</h2>
@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-md-6">
                 <div class="details-cards">
                   <div class="card-title">
                     <h2>Ingredients</h2>
@@ -86,8 +86,9 @@ export default {
   padding: 0px !important
 }
 
-.green-text {
-  color: rgba(33, 150, 83, 1)
+.title-text {
+  color: rgba(33, 150, 83, 1);
+  max-width: 80%;
 }
 
 .category-card {
