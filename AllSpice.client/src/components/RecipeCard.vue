@@ -1,31 +1,36 @@
 <template>
-  <div v-for="recipe in recipes" class="col-md-4">
-    <div class="recipe-card elevation-4"
-      :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
-      <div class="mt-1 d-flex justify-content-between">
-        <h6 class="category-card">{{ recipe.category }}</h6>
-        <h6 class="favorites-card"><i class="mdi mdi-heart-outline"></i></h6>
-      </div>
-      <div class="title-card">
-        <h6>{{ recipe.title }}</h6>
-        <h6>{{ recipe.instructions }}</h6>
-      </div>
+  <div class="recipe-card elevation-4" data-bs-toggle="modal" data-bs-target="#recipeDetailsModal"
+    :style="{ backgroundImage: `url(${recipe.img})`, backgroundPosition: 'center', backgroundSize: 'cover' }">
+    <div class="mt-1 d-flex justify-content-between">
+      <h6 class="category-card">{{ recipe.category }}</h6>
+      <h6 class="favorites-card"><i class="mdi mdi-heart-outline"></i></h6>
+    </div>
+    <div class="title-card">
+      <h6>{{ recipe.title }}</h6>
+      <h6>{{ recipe.instructions }}</h6>
     </div>
   </div>
+  <LargeModal />
 </template>
 
 
 <script>
-import { computed } from "vue";
-import { AppState } from "../AppState.js";
+import LargeModal from "./LargeModal.vue";
+import { Recipe } from "../models/Recipe.js";
 
 export default {
+  props: {
+    recipe: {
+      type: Recipe,
+      required: true
+    }
+  },
+
   setup() {
     return {
-      recipes: computed(() => AppState.recipes),
-
-    }
-  }
+    };
+  },
+  components: { LargeModal }
 }
 </script>
 
@@ -43,6 +48,7 @@ export default {
 .recipe-card:hover {
   transform: scale(1.025);
   transition: all .1s ease-in-out;
+  cursor: pointer;
 }
 
 .category-card {

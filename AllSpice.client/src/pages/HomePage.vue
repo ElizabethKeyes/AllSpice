@@ -3,20 +3,14 @@
     <section class="row justify-content-center">
       <div class="col-md-6 relative-col">
         <div class="filter-bar elevation-3">
-          <button class="btn filter-btn">
-            Home
-          </button>
-          <button class="btn filter-btn">
-            My Recipes
-          </button>
-          <button class="btn filter-btn">
-            Favorites
-          </button>
+          <button class="btn filter-btn" v-for="c in categories" @click="changeFilterCategory(c)">{{ c }}</button>
         </div>
       </div>
     </section>
     <section class="row mt-5">
-      <RecipeCard />
+      <div v-for="recipe in recipes" class="col-md-4">
+        <RecipeCard :recipe="recipe" />
+      </div>
     </section>
   </div>
 </template>
@@ -25,12 +19,13 @@
 import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { recipesService } from "../services/RecipesService.js"
-import { computed, onMounted } from "vue"
+import { computed, onMounted, ref, watchEffect } from "vue"
 import { AppState } from "../AppState.js"
 import RecipeCard from "../components/RecipeCard.vue"
 
 export default {
   setup() {
+    const filterCategory = ref('')
     async function getAllRecipes() {
       try {
         await recipesService.getAllRecipes();
@@ -40,10 +35,28 @@ export default {
         Pop.error(error.message);
       }
     }
+
+
     onMounted(() => {
       getAllRecipes();
     });
+
+
     return {
+      filterCategory,
+      categories: ["Home", "My Recipes", "Favorites"],
+      recipes: computed(() => {
+        if (!filterCategory.value || filterCategory.value == "home") {
+          return AppState.recipes
+        } else if (filterCategory.value == "my recipes") {
+          return AppState.recipes.filter(r => r.creatorId == AppState.account.id)
+        }
+      }),
+
+      changeFilterCategory(categoryName) {
+        filterCategory.value = categoryName.toLowerCase()
+        logger.log('changing category', filterCategory.value)
+      }
     };
   },
   components: { RecipeCard }
