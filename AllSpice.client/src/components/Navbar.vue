@@ -56,6 +56,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
+  border-radius: 5px;
 }
 
 .title-text {

@@ -19,6 +19,25 @@ class FavoritesService {
       AppState.newFavorites.push(new Favorite(res.data))
     }
   }
+
+  async removeFavorite() {
+    let favoriteId = null
+    let favoritesIndex = null
+    // This finds the favorite by looking through new and existing favorites, then assigns the id to favoriteId
+    let favorite = AppState.myFavorites.find(f => f.id == AppState.activeRecipe.id)
+    if (favorite == null || undefined) {
+      favorite = AppState.newFavorites.find(f => f.recipeId == AppState.activeRecipe.id)
+      favoriteId = favorite.id
+      favoritesIndex = AppState.newFavorites.findIndex(f => f.id == favoriteId)
+      AppState.newFavorites.splice(favoritesIndex, 1)
+    } else {
+      favoriteId = favorite.favoriteId
+      favoritesIndex = AppState.myFavorites.findIndex(f => f.favoriteId == favoriteId)
+      AppState.myFavorites.splice(favoritesIndex, 1)
+    }
+
+    const res = await api.delete(`api/favorites/${favoriteId}`)
+  }
 }
 
 export const favoritesService = new FavoritesService();

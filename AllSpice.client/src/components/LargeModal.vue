@@ -9,8 +9,9 @@
           <!-- Recipe photo and favorites indicator -->
           <div class="col-md-5">
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
-            <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fs-2"></i></h6>
-            <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2 add-favorite"
+            <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fav-btn fs-2"
+                @click="removeFavorite()"></i></h6>
+            <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2 fav-btn"
                 @click="addFavorite()"></i>
             </h6>
           </div>
@@ -99,12 +100,31 @@ export default {
       },
 
       async addIngredient() {
-        const ingredient = editable.value
-        await ingredientsService.addIngredient(ingredient)
+        try {
+          const ingredient = editable.value
+          await ingredientsService.addIngredient(ingredient)
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
       },
 
       async addFavorite() {
-        await favoritesService.addFavorite()
+        try {
+          await favoritesService.addFavorite()
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      },
+
+      async removeFavorite() {
+        try {
+          await favoritesService.removeFavorite()
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
       }
     }
   }
@@ -132,10 +152,6 @@ export default {
   border-bottom-left-radius: 0.45rem;
 }
 
-.add-favorite:hover {
-  cursor: pointer;
-}
-
 .favorites-card {
   background-color: rgba(126, 126, 126, 0.6);
   color: rgba(253, 253, 253, 1);
@@ -150,6 +166,10 @@ export default {
   position: absolute;
   top: 0px;
   left: 420px;
+}
+
+.fav-btn:hover {
+  cursor: pointer;
 }
 
 .modal-body {
