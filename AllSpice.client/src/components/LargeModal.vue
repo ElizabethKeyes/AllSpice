@@ -10,7 +10,9 @@
           <div class="col-md-5">
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
             <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fs-2"></i></h6>
-            <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2"></i></h6>
+            <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2 add-favorite"
+                @click="addFavorite()"></i>
+            </h6>
           </div>
           <!-- Recipe title -->
           <div class="col-md-7">
@@ -40,7 +42,7 @@
                     <ul>
                       <li v-for="i in ingredients" :key="i.id">{{ i.quantity }} {{ i.name }}</li>
                     </ul>
-                    <form @submit.prevent="addIngredient()" class="row">
+                    <form v-if="recipe.creatorId == account.id" @submit.prevent="addIngredient()" class="row">
                       <div class="col-7 pe-0">
                         <label for="ingredient" class="ps-1">Add Ingredient...</label>
                         <input type="text" id="ingredient" minlength="3" maxlength="25" name="ingredient"
@@ -58,6 +60,9 @@
                   </div>
                 </div>
               </div>
+              <div class="published-text">
+                <h6 class="mb-0">published by: {{ recipe.creator.name }}</h6>
+              </div>
 
             </section>
           </div>
@@ -73,6 +78,8 @@ import { computed, ref } from "vue";
 import { AppState } from "../AppState.js";
 import { logger } from "../utils/Logger.js";
 import { ingredientsService } from "../services/IngredientsService.js";
+import Pop from "../utils/Pop.js";
+import { favoritesService } from "../services/FavoritesService.js";
 
 export default {
   setup() {
@@ -81,9 +88,12 @@ export default {
       editable,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
+      account: computed(() => AppState.account),
 
       isFavorite(recipeId) {
         if (AppState.myFavorites.find(f => f.id == recipeId)) {
+          return true
+        } else if (AppState.newFavorites.find(f => f.recipeId == recipeId)) {
           return true
         } else return false
       },
@@ -91,6 +101,10 @@ export default {
       async addIngredient() {
         const ingredient = editable.value
         await ingredientsService.addIngredient(ingredient)
+      },
+
+      async addFavorite() {
+        await favoritesService.addFavorite()
       }
     }
   }
@@ -116,6 +130,10 @@ export default {
   width: 100%;
   border-top-left-radius: 0.45rem;
   border-bottom-left-radius: 0.45rem;
+}
+
+.add-favorite:hover {
+  cursor: pointer;
 }
 
 .favorites-card {
@@ -189,10 +207,12 @@ export default {
 .ingredient-input {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  border: 1px solid rgb(82, 115, 96) !important;
 }
 
 .qty-input {
-  border-radius: 0px
+  border-radius: 0px;
+  border: 1px solid rgb(82, 115, 96) !important;
 }
 
 .submit-btn {
@@ -204,6 +224,12 @@ export default {
 
 .submit-btn:hover {
   border: solid 1px rgb(82, 115, 96);
+}
+
+.published-text {
+  text-align: end;
+  color: rgba(109, 109, 109, 1);
+  margin-top: 1.25em;
 }
 
 
@@ -219,13 +245,6 @@ export default {
   }
 
   .favorites-card {
-    margin-right: .5em;
-    padding-left: .35em;
-    padding-right: .35em;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
     position: absolute;
     top: 0px;
     left: 30px;
@@ -238,7 +257,9 @@ export default {
   .title-text {
     color: rgba(33, 150, 83, 1);
     max-width: 100%;
-    margin-bottom: 0
+    margin-bottom: 0;
+    padding-left: .5em;
+    padding-right: .5em;
   }
 
   .category-card {
@@ -254,6 +275,11 @@ export default {
 
   .details-cards {
     margin-bottom: 1em;
+  }
+
+  .published-text {
+    margin-bottom: .5em;
+    padding-right: 1em;
   }
 
 

@@ -37,10 +37,13 @@ export default {
       isFavorite(recipeId) {
         if (AppState.myFavorites.find(f => f.id == recipeId)) {
           return true
+        } else if (AppState.newFavorites.find(f => f.recipeId == recipeId)) {
+          return true
         } else return false
       },
 
       setActiveRecipe(recipeId) {
+        AppState.ingredients = []
         recipesService.setActiveRecipe(recipeId)
       }
     };
@@ -58,6 +61,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  border-radius: 5px;
 }
 
 .recipe-card:hover {

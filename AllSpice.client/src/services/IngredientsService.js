@@ -11,9 +11,7 @@ class IngredientsService {
 
   async addIngredient(ingredient) {
     ingredient.recipeId = AppState.activeRecipe.id
-    logger.log('adding ingredients from the service: ', ingredient)
     const res = await api.post(`api/ingredients`, ingredient)
-    logger.log('ingredient coming back', res.data)
     AppState.ingredients.push(ingredient)
   }
 }
