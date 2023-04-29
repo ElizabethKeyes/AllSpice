@@ -65,7 +65,8 @@ export default {
 
     watchEffect(() => {
       if (AppState.activeRecipe) {
-        getIngredientsByRecipeId(AppState.activeRecipe.id);
+        AppState.ingredients = []
+        getIngredientsByRecipeId(AppState.activeRecipe.id)
       }
     })
 

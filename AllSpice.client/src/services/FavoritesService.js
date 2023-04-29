@@ -36,7 +36,7 @@ class FavoritesService {
       AppState.myFavorites.splice(favoritesIndex, 1)
     }
 
-    const res = await api.delete(`api/favorites/${favoriteId}`)
+    await api.delete(`api/favorites/${favoriteId}`)
   }
 }
 

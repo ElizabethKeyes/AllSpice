@@ -43,7 +43,6 @@ export default {
       },
 
       setActiveRecipe(recipeId) {
-        AppState.ingredients = []
         recipesService.setActiveRecipe(recipeId)
       }
     };

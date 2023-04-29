@@ -10,9 +10,9 @@
           <div class="col-md-5">
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
             <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fav-btn fs-2"
-                @click="removeFavorite()"></i></h6>
+                title="Remove Favorite" @click="removeFavorite()"></i></h6>
             <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2 fav-btn"
-                @click="addFavorite()"></i>
+                @click="addFavorite()" title="Add Favorite"></i>
             </h6>
           </div>
           <!-- Recipe title -->
@@ -103,6 +103,8 @@ export default {
         try {
           const ingredient = editable.value
           await ingredientsService.addIngredient(ingredient)
+          await ingredientsService.getIngredientsByRecipeId(AppState.activeRecipe.id)
+          editable.value = {}
         } catch (error) {
           logger.log(error)
           Pop.error(error.message)

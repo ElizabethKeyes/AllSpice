@@ -12,7 +12,6 @@ class IngredientsService {
   async addIngredient(ingredient) {
     ingredient.recipeId = AppState.activeRecipe.id
     const res = await api.post(`api/ingredients`, ingredient)
-    AppState.ingredients.push(ingredient)
   }
 }
 
