@@ -6,14 +6,19 @@
         <div class="modal-body row" v-if="recipe">
           <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#recipeDetailsModal"
             aria-label="Close"></button>
+          <!-- Recipe photo and favorites indicator -->
           <div class="col-md-5">
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
+            <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fs-2"></i></h6>
+            <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-2"></i></h6>
           </div>
+          <!-- Recipe title -->
           <div class="col-md-7">
             <div class="d-flex align-items-center recipe-title">
               <h2 class="title-text mt-4">{{ recipe.title }}</h2>
               <h6 class="category-card">{{ recipe.category }}</h6>
             </div>
+            <!-- Steps/Ingredients Cards -->
             <section class="row details-cards-row">
               <div class="col-md-6">
                 <div class="details-cards elevation-3">
@@ -25,19 +30,35 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-md-6">
                 <div class="details-cards elevation-3">
                   <div class="card-title">
                     <h2>Ingredients</h2>
                   </div>
                   <div class="card-body">
-                    <!-- TODO add ingredients once they've been retrieved. -->
                     <ul>
-                      <li v-for="i in ingredients" :key="i.id">{{ i.name }}</li>
+                      <li v-for="i in ingredients" :key="i.id">{{ i.quantity }} {{ i.name }}</li>
                     </ul>
+                    <form @submit.prevent="addIngredient()" class="row">
+                      <div class="col-7 pe-0">
+                        <label for="ingredient" class="ps-1">Add Ingredient...</label>
+                        <input type="text" id="ingredient" minlength="3" maxlength="25" name="ingredient"
+                          class="form-control ingredient-input" v-model="editable.name" required>
+                      </div>
+                      <div class="col-3 px-0">
+                        <label for="quantity">Quantity</label>
+                        <input type="text" id="quantity" minlength="3" maxlength="15" name="quantity"
+                          class="form-control qty-input" v-model="editable.quantity" required>
+                      </div>
+                      <div class="col-1 px-0 pt-4">
+                        <button class="btn submit-btn"><i class="mdi mdi-check"></i></button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
+
             </section>
           </div>
         </div>
@@ -48,14 +69,29 @@
 
 
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { AppState } from "../AppState.js";
+import { logger } from "../utils/Logger.js";
+import { ingredientsService } from "../services/IngredientsService.js";
 
 export default {
   setup() {
+    const editable = ref({})
     return {
+      editable,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
+
+      isFavorite(recipeId) {
+        if (AppState.myFavorites.find(f => f.id == recipeId)) {
+          return true
+        } else return false
+      },
+
+      async addIngredient() {
+        const ingredient = editable.value
+        await ingredientsService.addIngredient(ingredient)
+      }
     }
   }
 }
@@ -80,6 +116,22 @@ export default {
   width: 100%;
   border-top-left-radius: 0.45rem;
   border-bottom-left-radius: 0.45rem;
+}
+
+.favorites-card {
+  background-color: rgba(126, 126, 126, 0.6);
+  color: rgba(253, 253, 253, 1);
+  display: inline;
+  margin-right: .5em;
+  padding-left: .35em;
+  padding-right: .35em;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  top: 0px;
+  left: 420px;
 }
 
 .modal-body {
@@ -128,6 +180,30 @@ export default {
 
 .card-body {
   padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80%
+}
+
+.ingredient-input {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.qty-input {
+  border-radius: 0px
+}
+
+.submit-btn {
+  background-color: rgb(82, 115, 96);
+  color: rgba(244, 244, 244, 1);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.submit-btn:hover {
+  border: solid 1px rgb(82, 115, 96);
 }
 
 
@@ -142,17 +218,36 @@ export default {
     border-bottom-left-radius: 0rem;
   }
 
+  .favorites-card {
+    margin-right: .5em;
+    padding-left: .35em;
+    padding-right: .35em;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: absolute;
+    top: 0px;
+    left: 30px;
+  }
+
   .recipe-title {
-    justify-content: center;
+    flex-direction: column;
   }
 
   .title-text {
     color: rgba(33, 150, 83, 1);
     max-width: 100%;
+    margin-bottom: 0
+  }
+
+  .category-card {
+    margin-top: .5em
   }
 
   .details-cards-row {
     justify-content: center;
+    margin-top: 1.5em;
     padding-right: .5em;
     padding-left: .5em;
   }
@@ -160,5 +255,7 @@ export default {
   .details-cards {
     margin-bottom: 1em;
   }
+
+
 }
 </style>
