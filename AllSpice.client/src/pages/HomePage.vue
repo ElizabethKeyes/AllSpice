@@ -8,8 +8,8 @@
         </div>
       </div>
     </section>
-    <section class="row mt-5">
-      <div v-for="(recipe, i) in recipes" :key="recipe.id" class="col-md-4">
+    <section class="row mt-5 px-3">
+      <div v-for="(recipe, i) in recipes" :key="recipe.id" class="col-md-4 px-4">
         <RecipeCard :recipe="recipe" />
       </div>
     </section>

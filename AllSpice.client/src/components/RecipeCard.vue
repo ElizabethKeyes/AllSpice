@@ -5,7 +5,7 @@
     <div class="mt-1 d-flex justify-content-between">
       <h6 class="category-card">{{ recipe.category }}</h6>
       <h6 v-if="isFavorite(recipe.id)" class="favorites-card"><i class="mdi mdi-heart text-danger fs-4"></i></h6>
-      <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline fs-4"></i></h6>
+      <h6 v-else class="favorites-card"><i class="mdi mdi-heart-outline text-dark fs-4"></i></h6>
     </div>
     <div class="title-card">
       <h6 class="fw-bold mb-0">{{ recipe.title }}</h6>
@@ -52,8 +52,8 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-card {
-  min-height: 30vh;
-  margin-bottom: 1.5em;
+  min-height: 35vh;
+  margin-bottom: 3em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

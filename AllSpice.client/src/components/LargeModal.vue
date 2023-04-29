@@ -10,13 +10,13 @@
             <img :src="recipe.img" :alt="'a photo of ' + recipe.title" class="recipe-photo">
           </div>
           <div class="col-md-7">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center recipe-title">
               <h2 class="title-text mt-4">{{ recipe.title }}</h2>
               <h6 class="category-card">{{ recipe.category }}</h6>
             </div>
-            <section class="row pe-4 mt-5">
+            <section class="row details-cards-row">
               <div class="col-md-6">
-                <div class="details-cards">
+                <div class="details-cards elevation-3">
                   <div class="card-title">
                     <h2>Recipe Steps</h2>
                   </div>
@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="details-cards">
+                <div class="details-cards elevation-3">
                   <div class="card-title">
                     <h2>Ingredients</h2>
                   </div>
@@ -103,10 +103,16 @@ export default {
   height: 3vh;
 }
 
+.details-cards-row {
+  padding-right: 1.5em;
+  margin-top: 3em;
+}
+
 .details-cards {
   height: 40vh;
   background-color: #F0F4F2;
   border-radius: 5px;
+  width: 100%
 }
 
 .card-title {
@@ -122,5 +128,37 @@ export default {
 
 .card-body {
   padding: 0.5em;
+}
+
+
+@media screen and (max-width: 768px) {
+  .recipe-photo {
+    object-fit: cover;
+    object-position: center;
+    height: 40vh;
+    width: 100%;
+    border-top-left-radius: 0.45rem;
+    border-top-right-radius: 0.45rem;
+    border-bottom-left-radius: 0rem;
+  }
+
+  .recipe-title {
+    justify-content: center;
+  }
+
+  .title-text {
+    color: rgba(33, 150, 83, 1);
+    max-width: 100%;
+  }
+
+  .details-cards-row {
+    justify-content: center;
+    padding-right: .5em;
+    padding-left: .5em;
+  }
+
+  .details-cards {
+    margin-bottom: 1em;
+  }
 }
 </style>
