@@ -58,7 +58,13 @@
                   </div>
                   <div class="card-body">
                     <ul>
-                      <li v-for="i in ingredients" :key="i.id">{{ i.quantity }} {{ i.name }}</li>
+                      <li v-for="i in ingredients" :key="i.id" class="ingredient"><span
+                          class="d-flex justify-content-between">
+                          {{ i.quantity }} {{ i.name }}<span><i class="mdi mdi-minus text-danger selectable"
+                              title="Delete Ingredient" v-if="recipe.creatorId == account.id"
+                              @click="deleteIngredient(i.id)"></i></span>
+                        </span>
+                      </li>
                     </ul>
                     <form v-if="recipe.creatorId == account.id" @submit.prevent="addIngredient()" class="row">
                       <div class="col-7 pe-0">
@@ -168,14 +174,22 @@ export default {
         }
       },
 
+      async deleteIngredient(ingredientId) {
+        try {
+          if (await Pop.confirm("Are you sure you'd like to remove this ingredient?", "This cannot be undone", "Yes, I'm sure", "warning"))
+            await ingredientsService.deleteIngredient(ingredientId)
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      },
+
       editFalse() {
         AppState.edit = false
-        logger.log('FALSE!')
       },
 
       toggleEdit() {
         AppState.edit = !AppState.edit
-        logger.log('toggling edit', AppState.edit)
       },
 
     }

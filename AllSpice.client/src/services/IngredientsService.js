@@ -13,6 +13,12 @@ class IngredientsService {
     ingredient.recipeId = AppState.activeRecipe.id
     const res = await api.post(`api/ingredients`, ingredient)
   }
+
+  async deleteIngredient(ingredientId) {
+    const res = await api.delete(`api/ingredients/${ingredientId}`)
+    const foundIndex = AppState.ingredients.findIndex(i => i.id == ingredientId)
+    AppState.ingredients.splice(foundIndex, 1)
+  }
 }
 
 export const ingredientsService = new IngredientsService();
