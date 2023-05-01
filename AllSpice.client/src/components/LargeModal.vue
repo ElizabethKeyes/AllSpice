@@ -1,6 +1,6 @@
 <template>
-  <div class="modal fade" id="recipeDetailsModal" tabindex="-1" aria-labelledby="recipeDetailsModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" @blur="editFalse()" id="recipeDetailsModal" aria-labelledby="recipeDetailsModalLabel"
+    data-bs-backdrop="false" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-body row" v-if="recipe">
@@ -26,10 +26,27 @@
               <div class="col-md-6">
                 <div class="details-cards elevation-3">
                   <div class="card-title">
-                    <h2>Recipe Steps</h2>
+                    <h2>Instructions</h2>
                   </div>
                   <div class="card-body">
-                    <h6>{{ recipe.instructions }}</h6>
+                    <h6 v-if="edit == false">{{ recipe.instructions }}</h6>
+
+                    <form v-else @submit.prevent="editInstructions()">
+                      <label for="instructions">Edit Instructions:</label>
+                      <textarea name="instructions" id="instructions" rows="5" class="form-control"
+                        v-model="editableInstructions.instructions"></textarea>
+                      <div class="d-flex justify-content-end">
+                        <button class="btn submit-btn-2" title="Submit"><i class="mdi mdi-check"></i></button>
+                      </div>
+                    </form>
+
+                    <div class="d-flex justify-content-end">
+                      <p class="edit-text text-secondary" v-if="recipe.creatorId == account.id && edit == false"
+                        @click="toggleEdit()">Edit
+                        Instructions</p>
+                      <p class="edit-text text-secondary" v-if="recipe.creatorId == account.id && edit == true"
+                        @click="toggleEdit()">Cancel</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -55,7 +72,7 @@
                           class="form-control qty-input" v-model="editable.quantity" required>
                       </div>
                       <div class="col-1 px-0 pt-4">
-                        <button class="btn submit-btn"><i class="mdi mdi-check"></i></button>
+                        <button class="btn submit-btn" title="Submit"><i class="mdi mdi-check"></i></button>
                       </div>
                     </form>
                   </div>
@@ -75,21 +92,32 @@
 
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { logger } from "../utils/Logger.js";
 import { ingredientsService } from "../services/IngredientsService.js";
 import Pop from "../utils/Pop.js";
 import { favoritesService } from "../services/FavoritesService.js";
+import { recipesService } from "../services/RecipesService.js";
 
 export default {
   setup() {
     const editable = ref({})
+    const editableInstructions = ref({})
+
+    watchEffect(() => {
+      if (AppState.activeRecipe) {
+        editableInstructions.value = { ...AppState.activeRecipe }
+      }
+    })
+
     return {
       editable,
+      editableInstructions,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
       account: computed(() => AppState.account),
+      edit: computed(() => AppState.edit),
 
       isFavorite(recipeId) {
         if (AppState.myFavorites.find(f => f.id == recipeId)) {
@@ -127,7 +155,29 @@ export default {
           logger.log(error)
           Pop.error(error.message)
         }
-      }
+      },
+
+      async editInstructions() {
+        try {
+          const instructions = editableInstructions.value.instructions
+          await recipesService.editInstructions(instructions)
+          AppState.edit = false
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      },
+
+      editFalse() {
+        AppState.edit = false
+        logger.log('FALSE!')
+      },
+
+      toggleEdit() {
+        AppState.edit = !AppState.edit
+        logger.log('toggling edit', AppState.edit)
+      },
+
     }
   }
 }
@@ -226,6 +276,15 @@ export default {
   height: 80%
 }
 
+.edit-text {
+  margin-bottom: 0;
+  max-width: 10vw;
+}
+
+.edit-text:hover {
+  cursor: pointer;
+}
+
 .ingredient-input {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -244,7 +303,17 @@ export default {
   border-bottom-left-radius: 0px;
 }
 
+.submit-btn-2 {
+  background-color: rgb(82, 115, 96);
+  color: rgba(244, 244, 244, 1);
+  margin-top: .5em;
+}
+
 .submit-btn:hover {
+  border: solid 1px rgb(82, 115, 96);
+}
+
+.submit-btn-2:hover {
   border: solid 1px rgb(82, 115, 96);
 }
 
@@ -252,6 +321,7 @@ export default {
   text-align: end;
   color: rgba(109, 109, 109, 1);
   margin-top: 1.25em;
+  margin-bottom: .5em;
 }
 
 
@@ -297,6 +367,11 @@ export default {
 
   .details-cards {
     margin-bottom: 1em;
+  }
+
+  .edit-text {
+    margin-bottom: 0;
+    max-width: 100vw;
   }
 
   .published-text {
