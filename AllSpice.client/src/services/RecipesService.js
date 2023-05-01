@@ -32,6 +32,16 @@ class RecipesService {
     Modal.getOrCreateInstance("#recipeDetailsModal").hide()
   }
 
+  async postRecipe(recipeData) {
+    const res = await api.post(`api/recipes`, recipeData)
+    const createdRecipe = new Recipe(res.data)
+    AppState.activeRecipe = createdRecipe
+    AppState.recipes.push(createdRecipe)
+    Modal.getOrCreateInstance("#createRecipeModal").hide()
+    Pop.toast("Your recipe has been created!", "success", "top")
+    window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+  }
+
 
 }
 

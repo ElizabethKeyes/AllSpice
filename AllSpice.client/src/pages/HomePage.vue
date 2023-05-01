@@ -14,6 +14,10 @@
       </div>
     </section>
   </div>
+  <button v-if="account.id" class="btn btn-dark rounded-pill post-btn" data-bs-toggle="modal"
+    data-bs-target="#createRecipeModal">Post a
+    Recipe</button>
+  <CreateRecipeModal />
 </template>
 
 <script>
@@ -25,6 +29,7 @@ import { ingredientsService } from "../services/IngredientsService.js"
 import { computed, onMounted, ref, watchEffect } from "vue"
 import { AppState } from "../AppState.js"
 import RecipeCard from "../components/RecipeCard.vue"
+import CreateRecipeModal from "../components/CreateRecipeModal.vue"
 
 export default {
   setup() {
@@ -79,6 +84,7 @@ export default {
     return {
       filterCategory,
       categories: ["Home", "My Recipes", "Favorites"],
+      account: computed(() => AppState.account),
       recipes: computed(() => {
         if (!filterCategory.value || filterCategory.value == "home") {
           return AppState.recipes
@@ -94,7 +100,7 @@ export default {
       }
     };
   },
-  components: { RecipeCard }
+  components: { RecipeCard, CreateRecipeModal }
 }
 </script>
 
@@ -135,5 +141,11 @@ export default {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   border-bottom: solid 5px rgba(33, 150, 83, 1)
+}
+
+.post-btn {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
 }
 </style>
