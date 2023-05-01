@@ -85,7 +85,9 @@
                 </div>
               </div>
               <div class="published-text">
-                <h6 class="mb-0">published by: {{ recipe.creator.name }}</h6>
+                <h6 class="mb-0 d-flex justify-content-between"><span v-if="recipe.creatorId == account.id"
+                    class="text-danger selectable" @click="deleteRecipe()">delete
+                    recipe</span><span>published by: {{ recipe.creator.name }}</span></h6>
               </div>
 
             </section>
@@ -176,8 +178,21 @@ export default {
 
       async deleteIngredient(ingredientId) {
         try {
-          if (await Pop.confirm("Are you sure you'd like to remove this ingredient?", "This cannot be undone", "Yes, I'm sure", "warning"))
+          if (await Pop.confirm("Are you sure you'd like to remove this ingredient?", "This cannot be undone", "Yes, I'm sure", "warning")) {
             await ingredientsService.deleteIngredient(ingredientId)
+          }
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      },
+
+      async deleteRecipe() {
+        try {
+          if (await Pop.confirm("Are you sure you'd like to delete this recipe?", "This cannot be undone", "Yes, I'm sure", "warning")) {
+            const recipeId = AppState.activeRecipe.id
+            await recipesService.deleteRecipe(recipeId)
+          }
         } catch (error) {
           logger.log(error)
           Pop.error(error.message)

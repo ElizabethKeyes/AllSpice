@@ -1,3 +1,4 @@
+import { Modal } from "bootstrap";
 import { AppState } from "../AppState.js";
 import { Recipe } from "../models/Recipe.js";
 import { logger } from "../utils/Logger.js";
@@ -21,6 +22,14 @@ class RecipesService {
     const res = await api.put(`api/recipes/${AppState.activeRecipe.id}`, { instructions })
     AppState.activeRecipe.instructions = res.data.instructions
     Pop.toast("Instructions have been edited!", "success", "top")
+  }
+
+  async deleteRecipe(recipeId) {
+    const res = await api.delete(`api/recipes/${recipeId}`)
+    logger.log(res.data)
+    const foundIndex = AppState.recipes.findIndex(r => r.id == recipeId)
+    AppState.recipes.splice(foundIndex, 1)
+    Modal.getOrCreateInstance("#recipeDetailsModal").hide()
   }
 
 
