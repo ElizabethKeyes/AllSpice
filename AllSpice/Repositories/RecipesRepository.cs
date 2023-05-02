@@ -96,7 +96,9 @@ public class RecipesRepository
     accounts.*
     FROM recipes
     JOIN accounts on recipes.creatorId = accounts.id
-    WHERE recipes.category LIKE @query;
+    WHERE recipes.category LIKE @query
+    OR recipes.title LIKE @query
+    OR recipes.instructions LIKE @query;
     ";
 
     List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
