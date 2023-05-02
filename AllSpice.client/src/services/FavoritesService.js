@@ -22,14 +22,10 @@ class FavoritesService {
     }
   }
 
-  async removeFavorite() {
-    let favoriteId = null
-    let favoritesIndex = null
-    let favorite = AppState.myFavorites.find(f => f.id == AppState.activeRecipe.id)
-    favoriteId = favorite.favoriteId
-    favoritesIndex = AppState.myFavorites.findIndex(f => f.favoriteId == favoriteId)
-    AppState.myFavorites.splice(favoritesIndex, 1)
-    await api.delete(`api/favorites/${favoriteId}`)
+  async removeFavorite(favorite) {
+    await api.delete(`api/favorites/${favorite.favoriteId}`)
+    const index = AppState.myFavorites.findIndex(f => f.favoriteId == favorite.favoriteId)
+    AppState.myFavorites.splice(index, 1)
   }
 }
 

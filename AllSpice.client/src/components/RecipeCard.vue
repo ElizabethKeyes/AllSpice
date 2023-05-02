@@ -11,7 +11,9 @@
       <h6 class="fw-bold mb-0">{{ recipe.title }}</h6>
     </div>
   </div>
-  <LargeModal />
+  <LargeModal id="recipeDetailsModal">
+    <RecipeDetails />
+  </LargeModal>
 </template>
 
 
@@ -21,6 +23,7 @@ import { Recipe } from "../models/Recipe.js";
 import { AppState } from "../AppState.js";
 import { computed } from "vue";
 import { recipesService } from "../services/RecipesService.js";
+import RecipeDetails from "./RecipeDetails.vue";
 
 export default {
   props: {
@@ -45,7 +48,7 @@ export default {
       }
     };
   },
-  components: { LargeModal }
+  components: { LargeModal, RecipeDetails }
 }
 </script>
 
