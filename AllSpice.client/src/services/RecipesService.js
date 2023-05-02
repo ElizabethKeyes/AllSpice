@@ -42,6 +42,11 @@ class RecipesService {
     window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
   }
 
+  async searchRecipes(query) {
+    logger.log('[SEARCHING FROM THE SERVICE]', query)
+    // TODO ready to query to api. Need to set up back end function to receive query first.
+  }
+
 
 }
 

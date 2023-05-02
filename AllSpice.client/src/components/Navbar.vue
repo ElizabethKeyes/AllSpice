@@ -3,6 +3,9 @@
     <section class="row">
       <div class="col-12 p-3">
         <div class="banner elevation-3">
+          <form @submit.prevent="searchRecipes()">
+            <input type="text" class="form-control search-bar" placeholder="Search..." v-model="editable.search">
+          </form>
           <Login class="login" />
           <h1 class="title-text">All-Spice</h1>
           <h5 class="title-text">Cherish Your Family<br>And Their Cooking</h5>
@@ -36,10 +39,27 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import Login from './Login.vue'
+import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
+import { recipesService } from "../services/RecipesService.js";
 export default {
   setup() {
-    return {}
+    const editable = ref({})
+    return {
+      editable,
+
+      async searchRecipes() {
+        try {
+          const query = editable.value.search
+          await recipesService.searchRecipes(query)
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      }
+    }
   },
   components: { Login }
 }
@@ -57,6 +77,13 @@ export default {
   justify-content: center;
   position: relative;
   border-radius: 5px;
+}
+
+.search-bar {
+  position: fixed;
+  top: 28px;
+  right: 86px;
+  width: 230px;
 }
 
 .title-text {

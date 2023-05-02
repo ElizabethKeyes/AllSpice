@@ -10,6 +10,8 @@ class FavoritesService {
     AppState.myFavorites = res.data.map(f => new MyFavorite(f))
   }
 
+  // TODO need to correct the way favorites are added. They need to be classed as a myFavorite object to avoid issues.
+  // TODO afterwards, need to ensure that the user's favorites are properly drawing from the favorites filter
   async addFavorite() {
     if (!AppState.account.id) {
       Pop.toast("You must be logged in to add favorites", "error", "top")
