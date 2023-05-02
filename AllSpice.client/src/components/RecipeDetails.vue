@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-body row" v-if="recipe" :key="recipe?.id">
+  <div class="modal-body row" @pointerleave="editFalse()" v-if="recipe" :key="recipe?.id">
     <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#recipeDetailsModal"
       aria-label="Close"></button>
     <!-- Recipe photo and favorites indicator -->
@@ -37,14 +37,16 @@
               </form>
 
               <div class="d-flex justify-content-end">
-                <p role="button" class="edit-text text-secondary" v-if="recipe.creatorId == account.id && edit == false"
-                  @click="toggleEdit()">Edit
-                  Instructions</p>
-                <p role="button" class="edit-text text-secondary" v-if="recipe.creatorId == account.id && edit == true"
-                  @click="toggleEdit()">Cancel</p>
+                <button type="button" class="edit-text btn btn-outline-secondary"
+                  v-if="recipe.creatorId == account.id && !edit" @click.stop="toggleEdit()">Edit
+                  Instructions</button>
+                <button type="button" class="edit-text btn btn-outline-secondary"
+                  v-if="recipe.creatorId == account.id && edit" @click.stop="toggleEdit()">Cancel</button>
               </div>
             </div>
           </div>
+          <button v-if="recipe.creatorId == account.id" class="btn btn-outline-danger mt-1" @click="deleteRecipe()">
+            delete recipe</button>
         </div>
 
         <div class="col-md-6">
@@ -78,12 +80,9 @@
               </form>
             </div>
           </div>
+          <h6 class="text-end published-text">published by: {{ recipe.creator.name }}</h6>
         </div>
-        <div class="published-text">
-          <h6 class="mb-0 d-flex justify-content-between"><span v-if="recipe.creatorId == account.id"
-              class="text-danger selectable" @click="deleteRecipe()">delete
-              recipe</span><span>published by: {{ recipe.creator.name }}</span></h6>
-        </div>
+
 
       </section>
     </div>
@@ -295,7 +294,7 @@ export default {
 
 .edit-text {
   margin-bottom: 0;
-  max-width: 10vw;
+  max-width: 12vw;
 }
 
 .edit-text:hover {
@@ -335,7 +334,6 @@ export default {
 }
 
 .published-text {
-  text-align: end;
   color: rgba(109, 109, 109, 1);
   margin-top: 1.25em;
   margin-bottom: .5em;
