@@ -17,7 +17,15 @@
   <button v-if="account.id" class="btn btn-dark rounded-pill post-btn" data-bs-toggle="modal"
     data-bs-target="#createRecipeModal">Post a
     Recipe</button>
-  <CreateRecipeModal />
+
+  <SmallModal id="createRecipeModal">
+    <template #header>
+      <h3>New Recipe</h3>
+    </template>
+    <template #body>
+      <CreateRecipeForm />
+    </template>
+  </SmallModal>
 </template>
 
 <script>
@@ -29,7 +37,8 @@ import { ingredientsService } from "../services/IngredientsService.js"
 import { computed, onMounted, ref, watchEffect } from "vue"
 import { AppState } from "../AppState.js"
 import RecipeCard from "../components/RecipeCard.vue"
-import CreateRecipeModal from "../components/CreateRecipeModal.vue"
+import SmallModal from "../components/SmallModal.vue"
+import CreateRecipeForm from "../components/CreateRecipeForm.vue"
 
 export default {
   setup() {
@@ -100,7 +109,7 @@ export default {
       }
     };
   },
-  components: { RecipeCard, CreateRecipeModal }
+  components: { RecipeCard, SmallModal, CreateRecipeForm }
 }
 </script>
 

@@ -7,8 +7,10 @@
             <input type="text" class="form-control search-bar" placeholder="Search..." v-model="editable.search">
           </form>
           <Login class="login" />
-          <h1 class="title-text">All-Spice</h1>
-          <h5 class="title-text">Cherish Your Family<br>And Their Cooking</h5>
+          <router-link class="text-center" :to="{ name: 'Home' }">
+            <h1 class="title-text">All-Spice</h1>
+            <h5 class="title-text">Cherish Your Family<br>And Their Cooking</h5>
+          </router-link>
         </div>
       </div>
     </section>

@@ -12,6 +12,11 @@ class AccountService {
       logger.error('HAVE YOU STARTED YOUR SERVER YET???', err)
     }
   }
+
+  async editAccount(accountData) {
+    logger.log('[EDITING ACCOUNT FROM THE SERVICE]', accountData)
+    // TODO need to finish this once the back end is set up.
+  }
 }
 
 export const accountService = new AccountService()
