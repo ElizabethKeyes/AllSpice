@@ -98,9 +98,9 @@
   </div>
 </template>
 
-
+<!-- TODO Still need to fix this modal, the background is currently false in order to fix the improper closing, but it doesn't look good and it no longer closes on blur, of course  -->
 <script>
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { logger } from "../utils/Logger.js";
 import { ingredientsService } from "../services/IngredientsService.js";

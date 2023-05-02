@@ -86,4 +86,25 @@ public class RecipesRepository
     }, new { recipeId }).FirstOrDefault();
     return recipe;
   }
+
+  internal List<Recipe> SearchRecipes(string query)
+  {
+    query = '%' + query + '%';
+    string sql = @"
+    SELECT
+    recipes.*,
+    accounts.*
+    FROM recipes
+    JOIN accounts on recipes.creatorId = accounts.id
+    WHERE recipes.category LIKE @query;
+    ";
+
+    List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+    {
+      recipe.Creator = account;
+      return recipe;
+    }, new { query }).ToList();
+
+    return recipes;
+  }
 }

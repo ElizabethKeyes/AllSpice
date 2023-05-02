@@ -70,4 +70,10 @@ public class RecipesService
     }
     return recipe;
   }
+
+  internal List<Recipe> SearchRecipes(string query)
+  {
+    List<Recipe> recipes = _repo.SearchRecipes(query);
+    return recipes;
+  }
 }

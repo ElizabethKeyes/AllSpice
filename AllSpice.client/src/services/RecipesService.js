@@ -43,7 +43,8 @@ class RecipesService {
 
   async searchRecipes(query) {
     logger.log('[SEARCHING FROM THE SERVICE]', query)
-    // TODO ready to query to api. Need to set up back end function to receive query first.
+    const res = await api.get(`api/recipes?query=${query}`)
+    AppState.recipes = res.data.map(r => new Recipe(r))
   }
 
 
