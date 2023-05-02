@@ -130,8 +130,6 @@ export default {
       isFavorite(recipeId) {
         if (AppState.myFavorites.find(f => f.id == recipeId)) {
           return true
-        } else if (AppState.newFavorites.find(f => f.recipeId == recipeId)) {
-          return true
         } else return false
       },
 

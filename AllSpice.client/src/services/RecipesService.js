@@ -26,7 +26,6 @@ class RecipesService {
 
   async deleteRecipe(recipeId) {
     const res = await api.delete(`api/recipes/${recipeId}`)
-    logger.log(res.data)
     const foundIndex = AppState.recipes.findIndex(r => r.id == recipeId)
     AppState.recipes.splice(foundIndex, 1)
     Modal.getOrCreateInstance("#recipeDetailsModal").hide()
