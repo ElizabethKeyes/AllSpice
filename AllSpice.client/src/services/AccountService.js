@@ -1,3 +1,4 @@
+import { Modal } from "bootstrap"
 import { AppState } from '../AppState'
 import { Account } from '../models/Account.js'
 import { logger } from '../utils/Logger'
@@ -14,8 +15,9 @@ class AccountService {
   }
 
   async editAccount(accountData) {
-    logger.log('[EDITING ACCOUNT FROM THE SERVICE]', accountData)
-    // TODO need to finish this once the back end is set up.
+    const res = await api.put(`account`, accountData)
+    AppState.account = new Account(res.data)
+    Modal.getOrCreateInstance("#editAccountModal").hide()
   }
 }
 

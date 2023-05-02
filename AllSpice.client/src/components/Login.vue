@@ -53,6 +53,8 @@ export default {
 
 <style lang="scss" scoped>
 .profile-pic {
+  height: 45px;
+  width: 45px;
   border-radius: 100%;
   object-fit: cover;
   object-position: center;
