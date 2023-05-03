@@ -5,7 +5,7 @@
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
+  <footer class="footer-bg text-light">
     Made with 🌈 by Elizabeth
   </footer>
 </template>
@@ -40,5 +40,9 @@ footer {
   display: grid;
   place-content: center;
   height: 32px;
+}
+
+.footer-bg {
+  background-color: rgb(33, 150, 83)
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="comments-card elevation-3 row">
-    <div class="col-2 d-flex align-items-center">
+    <div class="col-3 col-md-2 d-flex align-items-center">
       <img :src="comment.creator.picture" :alt="'a photo of ' + comment.creator.name" class="profile-pic">
     </div>
-    <div class="col-10 pt-2">
+    <div class="col-md-10 col-9 pt-2">
       <h5>{{ comment.creator.name }}</h5>
       <p>{{ comment.body }}</p>
     </div>
@@ -40,5 +40,12 @@ export default {
   height: 10vh;
   width: 10vh;
   border-radius: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-pic {
+    height: 60px;
+    width: 60px;
+  }
 }
 </style>

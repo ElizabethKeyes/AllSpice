@@ -168,6 +168,7 @@ export default {
   position: fixed;
   bottom: 15px;
   right: 15px;
+  outline: 1px white solid;
 }
 
 @media screen and (max-width: 768px) {

@@ -17,7 +17,7 @@
         <h2 class="title-text mt-4">{{ recipe.title }}</h2>
         <h6 class="category-card">{{ recipe.category }}</h6>
       </div>
-      <!-- Steps/Ingredients Cards -->
+      <!-- Instructions/Ingredients Cards -->
       <section class="row details-cards-row">
         <div class="col-md-6">
           <div class="details-cards elevation-3">
@@ -45,7 +45,8 @@
               </div>
             </div>
           </div>
-          <button v-if="recipe.creatorId == account.id" class="btn btn-outline-danger mt-1" @click="deleteRecipe()">
+          <button v-if="recipe.creatorId == account.id" class="btn btn-outline-danger mt-1 mb-md-0 mb-1"
+            @click="deleteRecipe()">
             delete recipe</button>
         </div>
 
@@ -85,9 +86,9 @@
         <hr>
       </section>
     </div>
+    <!-- Comments -->
     <div class="col-12">
       <div v-if="account.id">
-
         <h4 class="ms-3">Leave a Comment...</h4>
         <section class="row justify-content-center">
           <div class="col-2 d-flex justify-content-end">
@@ -462,6 +463,11 @@ h6 {
     padding-right: 1em;
   }
 
-
+  .profile-pic {
+    height: 45px;
+    width: 45px;
+    margin-left: 0;
+    margin-top: 3em;
+  }
 }
 </style>
