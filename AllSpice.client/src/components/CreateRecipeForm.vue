@@ -86,6 +86,10 @@ export default {
   color: rgba(244, 244, 244, 1);
 }
 
+.submit-btn:hover {
+  border: solid 1px rgb(82, 115, 96);
+}
+
 .image-preview {
   object-fit: cover;
   object-position: center;

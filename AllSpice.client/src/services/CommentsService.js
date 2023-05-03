@@ -9,6 +9,12 @@ class CommentsService {
     AppState.comments = res.data.map(c => new Comment(c))
     logger.log('[APPSTATE COMMENTS]', AppState.comments)
   }
+
+  async postComment(commentData) {
+    commentData.recipeId = AppState.activeRecipe.id
+    const res = await api.post(`api/comments`, commentData)
+    AppState.comments.push(new Comment(res.data))
+  }
 }
 
 export const commentsService = new CommentsService();

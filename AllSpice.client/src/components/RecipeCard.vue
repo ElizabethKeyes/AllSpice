@@ -45,6 +45,7 @@ export default {
 
       setActiveRecipe(recipeId) {
         AppState.edit = false
+        AppState.comments = []
         recipesService.setActiveRecipe(recipeId)
       }
     };

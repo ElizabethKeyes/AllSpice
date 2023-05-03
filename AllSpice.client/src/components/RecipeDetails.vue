@@ -86,7 +86,28 @@
       </section>
     </div>
     <div class="col-12">
-      <h4 class="ms-2 mt-2 mb-3" v-if="comments">See What Others Are Saying...</h4>
+      <div v-if="account.id">
+
+        <h4 class="ms-3">Leave a Comment...</h4>
+        <section class="row justify-content-center">
+          <div class="col-2 d-flex justify-content-end">
+            <img :src="account.picture" :alt="'a photo of ' + recipe.creator.name" class="profile-pic">
+          </div>
+          <div class="col-9">
+            <form @submit.prevent="postComment()">
+              <div class="d-flex justify-content-center">
+                <textarea name="body" id="body" rows="5" class="form-control comment-box" placeholder="Leave a comment..."
+                  v-model="editable.body"></textarea>
+                <div class="d-flex align-items-center ms-2 mb-2">
+                  <button type="submit" class="btn submit-btn-3"><i class="mdi mdi-check"></i></button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </section>
+      </div>
+      <h4 class="ms-3 mt-2 mb-3" v-if="comments.length">See What Others Are Saying...</h4>
       <section class="row justify-content-center">
         <div class="col-10" v-for="comment in comments" :key="comment.id">
           <CommentsComponent :comment="comment" />
@@ -107,6 +128,7 @@ import Pop from "../utils/Pop.js";
 import { favoritesService } from "../services/FavoritesService.js";
 import { recipesService } from "../services/RecipesService.js";
 import CommentsComponent from "./CommentsComponent.vue";
+import { commentsService } from "../services/CommentsService.js";
 
 export default {
   setup() {
@@ -194,6 +216,18 @@ export default {
       toggleEdit() {
         AppState.edit = !AppState.edit;
       },
+
+      async postComment() {
+        try {
+          const commentData = {}
+          commentData.body = editable.value.body
+          commentsService.postComment(commentData)
+          editable.value.body = ""
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error.message)
+        }
+      }
     };
   },
   components: { CommentsComponent }
@@ -327,6 +361,12 @@ export default {
   margin-top: .5em;
 }
 
+.submit-btn-3 {
+  background-color: rgb(82, 115, 96);
+  color: rgba(244, 244, 244, 1);
+  max-height: 5vh;
+}
+
 .submit-btn:hover {
   border: solid 1px rgb(82, 115, 96);
 }
@@ -335,10 +375,28 @@ export default {
   border: solid 1px rgb(82, 115, 96);
 }
 
+.submit-btn-3:hover {
+  border: solid 1px rgb(82, 115, 96);
+}
+
 .published-text {
   color: rgba(109, 109, 109, 1);
   margin-top: 1.25em;
   margin-bottom: .5em;
+}
+
+.comment-box {
+  width: 90%;
+  margin-bottom: .75em;
+}
+
+.profile-pic {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 100%;
+  height: 12vh;
+  width: 12vh;
+  margin-left: 1.5em;
 }
 
 h6 {

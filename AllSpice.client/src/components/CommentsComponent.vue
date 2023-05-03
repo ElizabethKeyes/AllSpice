@@ -3,16 +3,15 @@
     <div class="col-2 d-flex align-items-center">
       <img :src="comment.creator.picture" :alt="'a photo of ' + comment.creator.name" class="profile-pic">
     </div>
-    <div class="col-10">
-      {{ comment.body }}
+    <div class="col-10 pt-2">
+      <h5>{{ comment.creator.name }}</h5>
+      <p>{{ comment.body }}</p>
     </div>
   </div>
 </template>
 
 
 <script>
-import { computed } from "vue";
-import { AppState } from "../AppState.js";
 import { Comment } from "../models/Comment.js";
 
 export default {
