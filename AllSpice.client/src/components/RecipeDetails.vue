@@ -82,8 +82,15 @@
           </div>
           <h6 class="text-end published-text">published by: {{ recipe.creator.name }}</h6>
         </div>
-
-
+        <hr>
+      </section>
+    </div>
+    <div class="col-12">
+      <h4 class="ms-2 mt-2 mb-3" v-if="comments">See What Others Are Saying...</h4>
+      <section class="row justify-content-center">
+        <div class="col-10" v-for="comment in comments" :key="comment.id">
+          <CommentsComponent :comment="comment" />
+        </div>
       </section>
     </div>
   </div>
@@ -99,19 +106,18 @@ import { ingredientsService } from "../services/IngredientsService.js";
 import Pop from "../utils/Pop.js";
 import { favoritesService } from "../services/FavoritesService.js";
 import { recipesService } from "../services/RecipesService.js";
+import CommentsComponent from "./CommentsComponent.vue";
 
 export default {
   setup() {
-    const editable = ref({})
-    const editableInstructions = ref({})
-    const isFavorite = computed(() => AppState.myFavorites.find(f => f.id == AppState.activeRecipe?.id))
-
+    const editable = ref({});
+    const editableInstructions = ref({});
+    const isFavorite = computed(() => AppState.myFavorites.find(f => f.id == AppState.activeRecipe?.id));
     watchEffect(() => {
       if (AppState.activeRecipe) {
-        editableInstructions.value = { ...AppState.activeRecipe }
+        editableInstructions.value = { ...AppState.activeRecipe };
       }
-    })
-
+    });
     return {
       editable,
       editableInstructions,
@@ -119,78 +125,78 @@ export default {
       ingredients: computed(() => AppState.ingredients),
       account: computed(() => AppState.account),
       edit: computed(() => AppState.edit),
+      comments: computed(() => AppState.comments),
       isFavorite,
-
       async addIngredient() {
         try {
-          const ingredient = editable.value
-          await ingredientsService.addIngredient(ingredient)
-          await ingredientsService.getIngredientsByRecipeId(AppState.activeRecipe.id)
-          editable.value = {}
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+          const ingredient = editable.value;
+          await ingredientsService.addIngredient(ingredient);
+          await ingredientsService.getIngredientsByRecipeId(AppState.activeRecipe.id);
+          editable.value = {};
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       async addFavorite() {
         try {
-          await favoritesService.addFavorite()
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+          await favoritesService.addFavorite();
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       async removeFavorite() {
         try {
-          await favoritesService.removeFavorite(isFavorite.value)
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+          await favoritesService.removeFavorite(isFavorite.value);
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       async editInstructions() {
         try {
-          const instructions = editableInstructions.value.instructions
-          await recipesService.editInstructions(instructions)
-          AppState.edit = false
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+          const instructions = editableInstructions.value.instructions;
+          await recipesService.editInstructions(instructions);
+          AppState.edit = false;
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       async deleteIngredient(ingredientId) {
         try {
           if (await Pop.confirm("Are you sure you'd like to remove this ingredient?", "This cannot be undone", "Yes, I'm sure", "warning")) {
-            await ingredientsService.deleteIngredient(ingredientId)
+            await ingredientsService.deleteIngredient(ingredientId);
           }
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       async deleteRecipe() {
         try {
           if (await Pop.confirm("Are you sure you'd like to delete this recipe?", "This cannot be undone", "Yes, I'm sure", "warning")) {
-            const recipeId = AppState.activeRecipe.id
-            await recipesService.deleteRecipe(recipeId)
+            const recipeId = AppState.activeRecipe.id;
+            await recipesService.deleteRecipe(recipeId);
           }
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error.message)
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error.message);
         }
       },
-
       toggleEdit() {
-        AppState.edit = !AppState.edit
+        AppState.edit = !AppState.edit;
       },
-
-    }
-  }
+    };
+  },
+  components: { CommentsComponent }
 }
 </script>
 

@@ -32,6 +32,7 @@
 import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { recipesService } from "../services/RecipesService.js"
+import { commentsService } from "../services/CommentsService.js"
 import { favoritesService } from "../services/FavoritesService.js"
 import { ingredientsService } from "../services/IngredientsService.js"
 import { computed, onMounted, ref, watchEffect } from "vue"
@@ -71,6 +72,15 @@ export default {
       }
     }
 
+    async function getCommentsByRecipeId(recipeId) {
+      try {
+        await commentsService.GetCommentsByRecipeId(recipeId)
+      } catch (error) {
+        logger.log(error)
+        Pop.error(error.message)
+      }
+    }
+
     watchEffect(() => {
       if (AppState.account.id) {
         getMyFavorites();
@@ -80,7 +90,9 @@ export default {
     watchEffect(() => {
       if (AppState.activeRecipe) {
         AppState.ingredients = []
+        AppState.comments = []
         getIngredientsByRecipeId(AppState.activeRecipe.id)
+        getCommentsByRecipeId(AppState.activeRecipe.id)
       }
     })
 
