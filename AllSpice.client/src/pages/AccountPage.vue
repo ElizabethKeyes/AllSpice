@@ -33,9 +33,10 @@ export default {
 
 <style scoped>
 .profile-pic {
-  height: 100px;
-  width: 100px;
+  height: 200px;
+  width: 200px;
   border-radius: 100%;
+  margin-bottom: .5em;
   object-fit: cover;
   object-position: center;
 }

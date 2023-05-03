@@ -131,7 +131,7 @@ export default {
 }
 
 .filter-btn {
-  color: rgba(33, 150, 83, 1);
+  color: rgb(28 131 72);
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   font-family: 'Sahitya', serif;

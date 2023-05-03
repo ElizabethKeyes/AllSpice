@@ -72,8 +72,9 @@ export default {
 }
 
 .category-card {
-  background-color: rgba(126, 126, 126, 0.6);
+  background-color: rgba(100, 99, 99, 0.6);
   color: rgba(253, 253, 253, 1);
+  text-shadow: 1px 1px 2px black;
   display: inline;
   padding-left: .35em;
   padding-right: .35em;
@@ -85,7 +86,7 @@ export default {
 }
 
 .favorites-card {
-  background-color: rgba(126, 126, 126, 0.6);
+  background-color: rgba(100, 99, 99, 0.6);
   color: rgba(253, 253, 253, 1);
   display: inline;
   margin-right: .5em;
@@ -101,8 +102,9 @@ export default {
 }
 
 .title-card {
-  background-color: rgba(126, 126, 126, 0.6);
+  background-color: rgba(100, 99, 99, 0.6);
   color: rgba(253, 253, 253, 1);
+  text-shadow: 1px 1px 2px black;
   padding-left: .35em;
   padding-right: .35em;
   padding-top: .25em;

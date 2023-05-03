@@ -20,7 +20,10 @@
       <div class="col-12">
         <label for="imgUrl" class="mt-2">Image URL</label>
         <input type="url" id="imgUrl" name="imgUrl" class="form-control" required minlength="5" maxlength="500"
-          v-model="editable.img">
+          v-model="editable.img" @input="previewImage()">
+        <div class="d-flex justify-content-center">
+          <img :src="imagePreview" v-if="imagePreview" class="image-preview" alt="The selected photo for your recipe">
+        </div>
       </div>
       <div class="col-12">
         <label for="instructions" class="mt-2">Instructions</label>
@@ -37,16 +40,25 @@
 
 
 <script>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { recipesService } from "../services/RecipesService.js";
+import { AppState } from "../AppState.js";
 
 export default {
   setup() {
     const editable = ref({})
+    const imagePreview = ref(null)
+
+    watchEffect(() => {
+      if (AppState.activeRecipe) {
+        imagePreview.value = AppState.activeRecipe.img
+      }
+    })
     return {
       editable,
+      imagePreview,
 
       async postRecipe() {
         try {
@@ -56,6 +68,11 @@ export default {
           logger.log(error)
           Pop.error(error.message)
         }
+      },
+
+      previewImage() {
+        imagePreview.value = editable.value.img
+        logger.log('changing the image preview', imagePreview.value, editable.value.img)
       }
     }
   }
@@ -67,5 +84,13 @@ export default {
 .submit-btn {
   background-color: rgb(82, 115, 96);
   color: rgba(244, 244, 244, 1);
+}
+
+.image-preview {
+  object-fit: cover;
+  object-position: center;
+  max-height: 40vh;
+  max-width: 100%;
+  margin-top: .5em;
 }
 </style>
