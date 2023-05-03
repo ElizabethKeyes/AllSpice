@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-body row" @pointerleave="editFalse()" v-if="recipe" :key="recipe?.id">
+  <div class="modal-body row" v-if="recipe" :key="recipe?.id">
     <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#recipeDetailsModal"
       aria-label="Close"></button>
     <!-- Recipe photo and favorites indicator -->
@@ -183,10 +183,6 @@ export default {
           logger.log(error)
           Pop.error(error.message)
         }
-      },
-
-      editFalse() {
-        AppState.edit = false
       },
 
       toggleEdit() {

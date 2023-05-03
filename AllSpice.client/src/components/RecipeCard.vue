@@ -44,6 +44,7 @@ export default {
       },
 
       setActiveRecipe(recipeId) {
+        AppState.edit = false
         recipesService.setActiveRecipe(recipeId)
       }
     };
