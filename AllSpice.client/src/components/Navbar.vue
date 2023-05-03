@@ -82,9 +82,9 @@ export default {
 }
 
 .search-bar {
-  position: fixed;
-  top: 28px;
-  right: 86px;
+  position: absolute;
+  top: 13px;
+  right: 77px;
   width: 230px;
 }
 
@@ -117,9 +117,14 @@ a:hover {
 }
 
 
-@media screen and (min-width: 768px) {
-  nav {
-    height: 64px;
+@media screen and (max-width: 768px) {
+
+  .search-bar {
+    position: absolute;
+    top: 22px;
+    right: 72px;
+    width: 230px;
   }
+
 }
 </style>

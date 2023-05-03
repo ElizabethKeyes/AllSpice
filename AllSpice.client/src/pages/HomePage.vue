@@ -157,4 +157,11 @@ export default {
   bottom: 15px;
   right: 15px;
 }
+
+@media screen and (max-width: 768px) {
+  .filter-bar {
+    width: 80%;
+    left: 39px;
+  }
+}
 </style>
