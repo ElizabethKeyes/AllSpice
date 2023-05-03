@@ -5,11 +5,13 @@ namespace AllSpice.Controllers;
 public class RecipesController : ControllerBase
 {
   private readonly RecipesService _recipesService;
+  private readonly CommentsService _commentsService;
   private readonly Auth0Provider _auth;
-  public RecipesController(RecipesService recipesService, Auth0Provider auth)
+  public RecipesController(RecipesService recipesService, Auth0Provider auth, CommentsService commentsService)
   {
     _recipesService = recipesService;
     _auth = auth;
+    _commentsService = commentsService;
   }
 
   [HttpPost]
@@ -78,6 +80,20 @@ public class RecipesController : ControllerBase
         List<Recipe> recipes = _recipesService.SearchRecipes(query);
         return Ok(recipes);
       }
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [HttpGet("{recipeId}/comments")]
+  public ActionResult<List<Comment>> GetCommentsByRecipeId(int recipeId)
+  {
+    try
+    {
+      List<Comment> comments = _commentsService.GetCommentsByRecipeId(recipeId);
+      return Ok(comments);
     }
     catch (Exception e)
     {

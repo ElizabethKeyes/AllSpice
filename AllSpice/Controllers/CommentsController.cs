@@ -12,6 +12,36 @@ public class CommentsController : ControllerBase
     _commentsService = commentsService;
   }
 
+  [HttpDelete("{commentId}")]
+  [Authorize]
+  public async Task<ActionResult<string>> DeleteComment(int commentId)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      string message = _commentsService.DeleteComment(userInfo.Id, commentId);
+      return Ok(message);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [HttpGet("{commentId}")]
+  public ActionResult<Comment> GetCommentById(int commentId)
+  {
+    try
+    {
+      Comment comment = _commentsService.GetCommentById(commentId);
+      return Ok(comment);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
   [HttpPost]
   [Authorize]
   public async Task<ActionResult<Comment>> PostComment([FromBody] Comment commentData)
